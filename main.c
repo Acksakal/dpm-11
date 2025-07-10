@@ -1,46 +1,32 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include "print_utils.h"
+#include "fn-protos.h"
 
 #define MAX_SIZE      20
 #define INITIAL_SIZE  10
-
-void print_array(int *, int);
-void delete_number(int *, int *, int);
-void insert_number(int *, int *, int, int);
-void remove_duplicates(int *, int *);
-void sort_ascending(int *, int, int);
 
 int main() {
     srand(time(NULL));
     puts("Pls. enter 10 numbers to fill the array: ");
     int nums[MAX_SIZE] = {0};
-    int count;
-    for (count = 0; count < INITIAL_SIZE;) {
-	printf("Array element No.%d = ", count + 1);
-	if (scanf("%d", &nums[count]) == 1)
-	    count++;
-	else {
-	    printf("Invalid input. Please enter a valid number.\n");
-
-	    /* flush the input buffer up to the newline */
-	    int ch;
-	    while ((ch = getchar()) != '\n' && ch != EOF);
-	}
-    }
+    int nums2[MAX_SIZE] = {0};
+    int len = 0;
+    take_user_input(nums, &len, INITIAL_SIZE);
     
     int choice;
-    while (1) {        
-	print_array(nums, count);
+    while (1) {   
+	PRINT_ARRAY(nums, len);
 	puts("\nChoose an operation:");
 	puts("1. Insert a number to the array");
 	puts("2. Delete a number from the array");
 	puts("3. Remove duplicates from the array");
 	puts("4. Sort the array in ascending order");
-/*	puts("4. Sort the array in ascending order");
 	puts("5. Merge another array");
-	puts("6. Merge another array and sort the resulting");
-	puts("0. Exit"); */
+	puts("6. Find max number");
+	puts("7. Find a number");
+	puts("8. Merge random sorted arrays");
 
 	printf("Enter your choice: ");
 	if (scanf("%d", &choice) != 1) {
@@ -56,22 +42,72 @@ int main() {
 		int pos;
 		printf("Enter a number to insert and its position in the array: ");
 		scanf("%d%d", &num, &pos);
-		insert_number(nums, &count, num, pos);
+		insert_number(nums, &len, num, pos);
 		break;
 	    }
 	    case 2: {
 		printf("Enter number to delete: ");
 		scanf("%d", &num);
-		delete_number(nums, &count, num);
+		delete_number(nums, &len, num);
 		break;
 	    }
 	    case 3: {
-		remove_duplicates(nums, &count);
+		remove_duplicates(nums, &len);
 		break;
 	    }
 	    case 4: {     
-		sort_ascending(nums, count, 1);
+		sort_ascending(nums, len, 1);
 		break;
+	    }
+	    case 5: {
+		puts("Pls. enter 10 numbers to fill the other array: ");
+		int len2 = 0;
+		take_user_input(nums2, &len2, INITIAL_SIZE);
+		PRINT_SECOND_ARRAY(nums2, len2);
+		int *merged = alloc_int_array(2, len, len2);		
+		num = merge_sorted_arrays(nums, nums2, len, len2, merged);
+		PRINT_MERGED_ARRAY(merged, num);
+		free(merged);
+		break;
+	    }
+	    case 6: {     
+		num = find_max(nums, len);
+		printf("Max num: %d\n", num);
+		break;
+	    }
+	    case 7: {
+	       	printf("Enter the number you want to find: ");
+		scanf("%d", &num);
+		num = find(nums, len, num);
+		if (num > 0)
+		    printf("The number is found and its index: %d\n", num);
+		else
+		    printf("The number is not found\n");
+		break;
+	    }
+	    case 8: {
+		while (1) {
+		    int len3 = randint(5, 10);
+		    int len4 = randint(7, 15);
+		    int *arr3 = malloc(len3 * sizeof(int));
+		    int *arr4 = malloc(len4 * sizeof(int));
+		    fill_and_sort(arr3, len3, arr4, len4);
+		    puts("Below are the auto-generated sorted arrays for you to merge");
+		    PRINT_RANDOM_ARRAY(arr3, len3);
+		    PRINT_RANDOM_ARRAY(arr4, len4);
+		    puts("Enter 1 for 'merging' OR 2 to re-generate");
+		    scanf("%d", &num);
+		    if (num == 1) {
+			int *merged = alloc_int_array(2, len3, len4);			
+			num = merge_sorted_arrays(arr3, arr4, len3, len4, merged);
+			PRINT_MERGED_ARRAY(merged, num);
+			break;
+		    }			
+		    else if (num == 2)
+			continue;
+		    free(arr3);
+		    free(arr4);
+		}		
 	    }
  	}
     }
