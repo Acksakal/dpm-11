@@ -9,4 +9,11 @@ int find(int *, int, int);
 void fill_and_sort(int *, int, int *, int);
 int randint(int, int);
 void take_user_input(int *arr, int *len, int initial_size);
-int *alloc_int_array(int, ...);
+int *malloc_int_variadic(int, ...);
+typedef enum {
+    COLOR_RED,
+    COLOR_GREEN,
+    COLOR_YELLOW
+} Color;
+void print_colored(Color color, char *format, ...);
+void fprintf_colored(FILE *stream, Color color, char *format, ...);

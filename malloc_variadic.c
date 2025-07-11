@@ -1,7 +1,9 @@
+#include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>
+#include "fn-protos.h"
 
-int *alloc_int_array(int count, ...) {
+int *malloc_int_variadic(int count, ...) {
     int total_size = 0;
 
     va_list args;
@@ -14,6 +16,10 @@ int *alloc_int_array(int count, ...) {
 
     va_end(args);
 
-    int *merged = malloc(total_size * sizeof(int));
-    return merged;
+    int *chunk = malloc(total_size * sizeof(int));
+    if (chunk == NULL) {
+	fprintf_colored(stderr, COLOR_RED, "Warning: memory allocation failed!\n");
+	return NULL;
+    }
+    return chunk;
 }
