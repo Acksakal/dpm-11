@@ -1,7 +1,7 @@
 #!/bin/bash
 
-SRC=$(find . -name '*.c' ! -name '#*' ! -name '*#' ! -name '.#*')
+SRC=$(find src/ -name '*.c' ! -name '#*' ! -name '*#' ! -name '.#*')
 OUT="a.out"
-gcc $SRC -o $OUT
+gcc -Iinclude $SRC -o $OUT
 echo "Build complete. Running..."
 ./$OUT
