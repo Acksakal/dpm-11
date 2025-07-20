@@ -88,7 +88,7 @@ int main() {
 		break;
 	    }
 	    case 8: {
-		while (1) {
+		while (1) {		  
 		    int len3 = randint(5, 10);
 		    int len4 = randint(7, 15);
 		    int *arr3 = malloc(len3 * sizeof(int));
@@ -103,12 +103,16 @@ int main() {
 			int *merged = malloc_int_variadic(2, len3, len4);
 			num = merge_sorted_arrays(arr3, arr4, len3, len4, merged);
 			PRINT_MERGED_ARRAY(merged, num);
+			free(arr3);		     
+			free(arr4);		     
+			free(merged);		     
 			break;
 		    }
-		    else if (num == 2)
+		    else if (num == 2) {
+			free(arr3);
+		        free(arr4);
 			continue;
-		    free(arr3);
-		    free(arr4);
+		    }
 		}
 	    }
  	}
