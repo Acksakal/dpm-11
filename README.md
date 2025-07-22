@@ -1,0 +1,1 @@
+This repository contains simple implementations of core algorithms and data structures, including stacks, queues, and sorting algorithms. It is intended for training and educational purposes, with a focus on understanding low-level logic and coding fundamentals. All code is written from scratch without relying on external libraries.
